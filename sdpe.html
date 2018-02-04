@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<title>Sdpe's tests</title>
+	<style>
+		.fail{
+			color: red;
+		}
+		.pass{
+			color : green;
+
+		}
+		#report{
+                          list-style: none;  	
+                          padding: 20px;
+                          background-color : white; 		
+		}
+		.title{
+			color: black;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1 style="text-align: center;">Parser's tests</h1>
+		<ul id="report">
+			
+		</ul>
+	</div>
+ <script>
+ 	var report =(function(){
+ 	      let list = document.getElementById('report');
+	      return function log(message,compare,...args){
+
+	      	          if(typeof(compare) !== 'string' && !(compare instanceof String) ){
+	      	          	    compare= JSON.stringify(compare);
+	      	          }
+	      	         let item= document.createElement('li');
+	      	          if(typeof(message) !== 'string' && !(message instanceof String) ){
+	      	          	    if(typeof(message) === 'function'){
+	      	          	    	try{
+	      	          	              let msg;
+	      	          	              if(args && args.length > 0)
+	      	          	    	     	msg = message(...args);
+	      	          	    	    else
+                                                    msg = message();
+	      	          	    	    log(msg,compare);	
+	      	          	    	}catch(err){
+                                              log(err.message,compare);
+	      	          	    	}  
+	      	          	    	return;         
+	      	          	    }
+
+	      	          	    item.innerText = JSON.stringify(message);
+	      	          }else {
+	      	          	    item.innerText = message;
+	      	          }          
+	      	         item.className += (compare || compare === 0) ? (compare === item.innerText ? 'pass' : ( item.innerText = `expected : ${compare} got : ${JSON.stringify(message)}` ,'fail') ): 'title';
+		         list.appendChild(item);
+		     }
+ 	})()
+ 	
+ </script>	
+<script src="sdpe.js"></script>
+<script src="tests.js"></script>
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>	
+</body>
+</html>
